@@ -1,0 +1,49 @@
+----------- Время наблюдения: 90000ms (main: Thread.sleep(100000)) --------------
+
+Создание 1000 items: Application runtime: 34ms
+Heap memory usage: 7565 kbytes;
+GC time:
+0,013 seconds on G1 Young Generation (1 collections),
+0,000 seconds on G1 Old Generation (0 collections)
+=================================================================================
+Создание 100_000 items: Application runtime: 110ms
+Heap memory usage: 21927 kbytes;
+GC time:
+0,019 seconds on G1 Young Generation (3 collections)
+0,000 seconds on G1 Old Generation (0 collections)
+=================================================================================
+Создание 1_000_000 items: Application runtime: 321ms
+Heap memory usage: 189440 kbytes;
+GC time:
+0,115 seconds on G1 Young Generation (7 collections)
+0,000 seconds on G1 Old Generation (0 collections)
+=================================================================================
+Создание 10_000_000 items: Application runtime: 2286ms
+Heap memory usage: 1626112 kbytes;
+GC time:
+1,026 seconds on G1 Young Generation (19 collections)
+0,000 seconds on G1 Old Generation (0 collections)
+=================================================================================
+Создание 100_000 items и удаление 50_000 items: Application runtime: 590ms
+Heap memory usage: 21454 kbytes;
+GC time:
+0,018 seconds on G1 Young Generation (3 collections)
+0,000 seconds on G1 Old Generation (0 collections)
+=================================================================================
+Создание 1_000_000 items и удаление 500_000 items: Application runtime: 152578ms
+Heap memory usage: 187392 kbytes;
+GC time:
+0,149 seconds on G1 Young Generation (8 collections)
+0,000 seconds on G1 Old Generation (0 collections)
+=================================================================================
+Создание 10_000_000 items и вывод на консоль: Application runtime: 52016ms
+Heap memory usage: 2845591 kbytes;
+GC time:
+1,158 seconds on G1 Young Generation (33 collections)
+0,000 seconds on G1 Old Generation (0 collections)
+=================================================================================
+Создание 20_000_000 items и вывод на консоль: Application runtime: 109060ms
+Heap memory usage: 3665233 kbytes;
+GC time:
+2,200 seconds on G1 Young Generation (107 collections)
+0,000 seconds on G1 Old Generation (0 collections)
