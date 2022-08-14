@@ -35,6 +35,7 @@ public class ReplaceActionTest {
         tracker.add(new Item(itemName));
         ReplaceAction rep = new ReplaceAction(out);
         Input input = mock(Input.class);
+        when(input.askString(any(String.class))).thenReturn("");
         rep.execute(input, tracker);
         String ln = System.lineSeparator();
         assertThat(out.toString(),
