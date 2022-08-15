@@ -10,8 +10,6 @@ import java.time.format.DateTimeFormatter;
 @Table(name = "items")
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Item {
 
@@ -25,7 +23,25 @@ public class Item {
 
     @NonNull
     private String name;
-    private LocalDateTime created = LocalDateTime.now();
+    private LocalDateTime created;
+    private String description;
+
+    public Item(@NonNull String name) {
+        this.name = name;
+        this.created = LocalDateTime.now();
+    }
+
+    public Item(@NonNull String name, String description) {
+        this.name = name;
+        this.description = description;
+        this.created = LocalDateTime.now();
+    }
+
+    public Item(int id, @NonNull String name, LocalDateTime created) {
+        this.id = id;
+        this.name = name;
+        this.created = created;
+    }
 
     @Override
     public String toString() {
