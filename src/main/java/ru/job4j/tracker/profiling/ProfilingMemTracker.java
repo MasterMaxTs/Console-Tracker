@@ -1,7 +1,7 @@
 package ru.job4j.tracker.profiling;
 
-import ru.job4j.tracker.Item;
-import ru.job4j.tracker.MemTracker;
+import ru.job4j.tracker.models.Item;
+import ru.job4j.tracker.trackers.MemTracker;
 
 public class ProfilingMemTracker {
     public static void main(String[] args) throws InterruptedException {
