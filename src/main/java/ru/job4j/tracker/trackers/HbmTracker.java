@@ -62,6 +62,14 @@ public class HbmTracker implements Store, AutoCloseable {
         return rsl;
     }
 
+    public void deleteAll() {
+        Session session = sf.openSession();
+        session.beginTransaction();
+        session.createQuery("delete from Item").executeUpdate();
+        session.getTransaction().commit();
+        session.close();
+    }
+
     @Override
     public List<Item> findAll() {
         Session session = sf.openSession();
