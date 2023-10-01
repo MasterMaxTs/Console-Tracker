@@ -5,14 +5,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.job4j</groupId>
-    <artifactId>memTracker</artifactId>
+    <artifactId>ConsoleTracker</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
 
     <properties>
-        <maven.compiler.source>14</maven.compiler.source>
-        <maven.compiler.target>14</maven.compiler.target>
+        <java.version>17</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <docker.db.url.jdbc>${JDBC_URL}</docker.db.url.jdbc>
     </properties>
 
     <profiles>
@@ -28,6 +30,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
         </profile>
+
         <profile>
             <id>production</id>
             <properties>
@@ -37,6 +40,17 @@
                 <db.driver>org.postgresql.Driver</db.driver>
             </properties>
         </profile>
+
+        <profile>
+            <id>docker</id>
+            <properties>
+                <db.url>${docker.db.url.jdbc}</db.url>
+                <db.username>postgres</db.username>
+                <db.password>password</db.password>
+                <db.driver>org.postgresql.Driver</db.driver>
+            </properties>
+        </profile>
+
     </profiles>
 
     <dependencies>
