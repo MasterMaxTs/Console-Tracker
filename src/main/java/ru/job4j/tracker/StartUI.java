@@ -69,6 +69,7 @@ public class StartUI {
         String username = loadSysEnvIfNullThenConfig("JDBC_USERNAME", "username", config);
         String password = loadSysEnvIfNullThenConfig("JDBC_PASSWORD", "password", config);
         String driver = loadSysEnvIfNullThenConfig("JDBC_DRIVER", "driver-class-name", config);
+        System.out.println("url=" + url);
         Class.forName(driver);
         return DriverManager.getConnection(url, username, password);
     }

@@ -8,7 +8,8 @@ COPY . .
 
 RUN mvn package -Dmaven.test.skip=true
 
-CMD ["mvn", "liquibase:update", "-Pdocker"]
+COPY run.sh start/
 
-CMD ["java", "-jar", "target/tracker.jar"]
+RUN chmod +x start/run.sh
 
+CMD ["start/run.sh"]
