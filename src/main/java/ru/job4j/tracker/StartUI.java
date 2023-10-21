@@ -1,12 +1,14 @@
 package ru.job4j.tracker;
 
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import ru.job4j.tracker.actions.*;
 import ru.job4j.tracker.input.ConsoleInput;
 import ru.job4j.tracker.input.Input;
 import ru.job4j.tracker.input.ValidateInput;
 import ru.job4j.tracker.output.ConsoleOutput;
 import ru.job4j.tracker.output.Output;
-import ru.job4j.tracker.trackers.SqlTracker;
+import ru.job4j.tracker.trackers.HbmTracker;
 import ru.job4j.tracker.trackers.Store;
 
 import java.io.IOException;
@@ -14,9 +16,7 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public class StartUI {
     private final Output out;
@@ -74,11 +74,38 @@ public class StartUI {
         return DriverManager.getConnection(url, username, password);
     }
 
+    private static StandardServiceRegistry buildRegistry() {
+        var config = new Properties();
+        try (InputStream in = StartUI.class.getClassLoader()
+                .getResourceAsStream("app.properties")) {
+            config.load(in);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+        Map<String, String> settings = new HashMap<>();
+        settings.put("hibernate.connection.url",
+                loadSysEnvIfNullThenConfig("JDBC_URL", "url", config));
+        settings.put("hibernate.connection.username",
+                loadSysEnvIfNullThenConfig("JDBC_USERNAME", "username", config));
+        settings.put("hibernate.connection.password",
+                loadSysEnvIfNullThenConfig("JDBC_PASSWORD", "password", config));
+        settings.put("hibernate.connection.driver_class",
+                loadSysEnvIfNullThenConfig("JDBC_DRIVER", "driver-class-name", config));
+        settings.put("hibernate.connection.pool_size", "10");
+        settings.put("hibernate.current_session_context_class", "thread");
+        settings.put("hibernate.show_sql", "false");
+        settings.put("format_sql", "true");
+        settings.put("use_sql_comments", "true");
+        settings.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL10Dialect");
+        settings.put("hibernate.hbm2ddl.auto", "none");
+        return new StandardServiceRegistryBuilder().applySettings(settings).build();
+    }
+
     public static void main(String[] args) throws Exception {
         Output output = new ConsoleOutput();
         Input input =
                 new ValidateInput(output, new ConsoleInput());
-        try (Store tracker = new SqlTracker(loadConnection())) {
+        try (Store tracker = new HbmTracker(buildRegistry())) {
             tracker.init();
             List<UserAction> actions = new ArrayList<>();
             actions.add(new CreateAction(output));

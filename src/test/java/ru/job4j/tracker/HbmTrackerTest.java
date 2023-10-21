@@ -1,8 +1,8 @@
 package ru.job4j.tracker;
 
-import org.junit.After;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.junit.*;
 import ru.job4j.tracker.models.Item;
 import ru.job4j.tracker.trackers.HbmTracker;
 
@@ -13,11 +13,23 @@ import static org.junit.Assert.*;
 
 public class HbmTrackerTest {
 
-    private static HbmTracker tracker;
+    private static StandardServiceRegistry serviceRegistry;
+    private HbmTracker tracker;
 
     @BeforeClass
     public static void initialization() {
-        tracker = new HbmTracker();
+        serviceRegistry =
+                new StandardServiceRegistryBuilder().configure().build();
+    }
+
+    @AfterClass
+    public static void destroy() {
+        StandardServiceRegistryBuilder.destroy(serviceRegistry);
+    }
+
+    @Before
+    public void whenSetUp() {
+        tracker = new HbmTracker(serviceRegistry);
         tracker.init();
     }
 

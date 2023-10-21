@@ -1,4 +1,8 @@
 version: "3.9"
+
+volumes:
+  db_data:
+
 services:
   db:
     image: postgres
@@ -7,10 +11,10 @@ services:
       - POSTGRES_DB=tracker
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
-      - PGDATA=/var/lib/postgresql/data
     volumes:
-      - ./db/shortcut/data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
     restart: always
+
   job4j_tracker:
     build:
       context: .
