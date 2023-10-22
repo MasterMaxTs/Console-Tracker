@@ -18,14 +18,32 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.*;
 
+/**
+ * Главный класс приложения
+ */
 public class StartUI {
+
+    /**
+     * Зависимость от интерфейса отображения данных
+     */
     private final Output out;
 
+    /**
+     * Конструктор
+     * @param out реализация отображения данных
+     */
     public StartUI(Output out) {
         this.out = out;
     }
 
-    public void init(Input input, Store memTracker, List<UserAction> actions) {
+    /**
+     * Инициализирует интерфейс консольного приложения
+     * @param input реализация интерфейса ввода данных на входе
+     * @param tracker реализация хранилища заявок на входе
+     * @param actions реализации действий пользователя в меню приложения
+     * в виде списка на входе
+     */
+    public void init(Input input, Store tracker, List<UserAction> actions) {
         boolean run = true;
         while (run) {
             this.showMenu(actions);
@@ -35,10 +53,15 @@ public class StartUI {
                 continue;
             }
             UserAction action = actions.get(select);
-            run = action.execute(input, memTracker);
+            run = action.execute(input, tracker);
         }
     }
 
+    /**
+     * Отображает текстовое меню в консоле приложения
+     * @param actions реализации действий пользователя в меню приложения
+     * в виде списка
+     */
     private void showMenu(List<UserAction> actions) {
         out.println("Menu.");
         for (int i = 0; i < actions.size(); i++) {
@@ -46,6 +69,15 @@ public class StartUI {
         }
     }
 
+    /**
+     * Возвращает значение системной переменной по имени
+     * @param sysEnv название системной переменной на входе
+     * @param key название ключа из файла настройки приложения
+     * classpath: app.properties
+     * @param config объект конфигурации приложения в виде Properties
+     * @return значение существующей системной переменной по имени
+     * иначе-значение по ключу из объекта конфигурации
+     */
     private static String loadSysEnvIfNullThenConfig(String sysEnv,
                                                      String key,
                                                      Properties config) {
@@ -56,6 +88,10 @@ public class StartUI {
         return value;
     }
 
+    /**
+     * Создает соединение c хранилищем заявок в БД с помощью Jdbc
+     * @return объект Connection
+     */
     private static Connection loadConnection()
                                     throws ClassNotFoundException, SQLException {
         var config = new Properties();
@@ -74,6 +110,11 @@ public class StartUI {
         return DriverManager.getConnection(url, username, password);
     }
 
+    /**
+     * Производит предварительную настройку для соединения c хранилищем
+     * заявок в БД с помощью Hibernate
+     * @return объект StandardServiceRegistry
+     */
     private static StandardServiceRegistry buildRegistry() {
         var config = new Properties();
         try (InputStream in = StartUI.class.getClassLoader()
@@ -101,6 +142,10 @@ public class StartUI {
         return new StandardServiceRegistryBuilder().applySettings(settings).build();
     }
 
+    /**
+     * Главный исполняемый метод приложения
+     * @param args массив из аргументов командной строки
+     */
     public static void main(String[] args) throws Exception {
         Output output = new ConsoleOutput();
         Input input =

@@ -1,5 +1,6 @@
 package ru.job4j.tracker;
 
+import org.junit.Before;
 import org.junit.Test;
 import ru.job4j.tracker.input.Input;
 import ru.job4j.tracker.input.ValidateInput;
@@ -11,9 +12,15 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 public class ValidateInputTest {
 
+    private Output out;
+
+    @Before
+    public void whenSetUp() {
+        out = new StubOutput();
+    }
+
     @Test
     public void whenInvalidInput() {
-        Output out = new StubOutput();
         Input in = new StubInput(new String[]
                 {"one", "1"}
                 );
@@ -24,7 +31,6 @@ public class ValidateInputTest {
 
     @Test
     public void whenCorrectInput() {
-        Output out = new StubOutput();
         Input in = new StubInput(new String[]
                 {"5"}
         );
@@ -35,7 +41,6 @@ public class ValidateInputTest {
 
     @Test
     public void whenMultipleCorrectInput() {
-        Output out = new StubOutput();
         Input in = new StubInput(new String[]
                 {"0", "5", "3", "4"}
         );
@@ -49,7 +54,6 @@ public class ValidateInputTest {
 
     @Test
     public void whenNegativeInput() {
-        Output out = new StubOutput();
         Input in = new StubInput(new String[]
                 {"-1"}
         );

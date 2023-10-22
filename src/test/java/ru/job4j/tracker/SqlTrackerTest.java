@@ -100,12 +100,12 @@ public class SqlTrackerTest {
         Item item3 = new Item("item1");
         tracker.add(item2);
         tracker.add(item3);
-        assertThat(tracker.findByName("item1"), is(List.of(item3, item1)));
+        assertThat(tracker.findByKeyInName("item1"), is(List.of(item3, item1)));
     }
 
     @Test
     public void whenFindItemWithNonExistentNameThanRslIsEmpty() {
-        assertThat(tracker.findByName("otherItem"), is(List.of()));
+        assertThat(tracker.findByKeyInName("otherItem"), is(List.of()));
     }
 
     @Test

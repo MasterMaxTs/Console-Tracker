@@ -9,12 +9,25 @@ import ru.job4j.tracker.models.Item;
 
 import java.util.List;
 
+/**
+ * Реализация доступа к хранилищу заявок в БД с помощью Hibernate
+ */
 public class HbmTracker implements Store, AutoCloseable {
 
+    /**
+     * Зависимость от объекта StandardServiceRegistry
+     */
     private final StandardServiceRegistry registry;
 
+    /**
+     * Зависимость от объекта SessionFactory
+     */
     private SessionFactory sf;
 
+    /**
+     * Конструктор
+     * @param registry StandardServiceRegistry
+     */
     public HbmTracker(StandardServiceRegistry registry) {
         this.registry = registry;
     }
@@ -86,13 +99,12 @@ public class HbmTracker implements Store, AutoCloseable {
     }
 
     @Override
-    public List<Item> findByName(String key) {
+    public List<Item> findByKeyInName(String key) {
         Session session = sf.openSession();
         session.beginTransaction();
         List<Item> rsl = session.createQuery(
-                        "from Item where name = :fName", Item.class
-                )
-                .setParameter("fName", key)
+                        "from Item where name like :key order by created", Item.class)
+                .setParameter("key", "%" + key + "%")
                 .list();
         session.getTransaction().commit();
         session.close();

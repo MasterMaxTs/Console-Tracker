@@ -5,9 +5,20 @@ import ru.job4j.tracker.models.Item;
 import ru.job4j.tracker.output.Output;
 import ru.job4j.tracker.trackers.Store;
 
+/**
+ * Реализация процесса создания заявки
+ */
 public class CreateAction implements UserAction {
+
+    /**
+     * Зависимость от интерфейса отображения данных
+     */
     private final Output out;
 
+    /**
+     * Конструктор
+     * @param out реализация интерфейса отображения данных
+     */
     public CreateAction(Output out) {
         this.out = out;
     }

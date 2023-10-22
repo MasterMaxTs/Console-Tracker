@@ -7,9 +7,20 @@ import ru.job4j.tracker.trackers.Store;
 
 import java.util.List;
 
+/**
+ * Реализация процесса Вывода всех заявок из хранилища
+ */
 public class ShowAllAction implements UserAction {
+
+    /**
+     * Зависимость от интерфейса отображения данных
+     */
     private final Output out;
 
+    /**
+     * Конструктор
+     * @param out реализация интерфейса отображения данных
+     */
     public ShowAllAction(Output out) {
         this.out = out;
     }
@@ -20,9 +31,9 @@ public class ShowAllAction implements UserAction {
     }
 
     @Override
-    public boolean execute(Input input, Store memTracker) {
+    public boolean execute(Input input, Store tracker) {
         out.println("=== Show all items ===");
-        List<Item> items = memTracker.findAll();
+        List<Item> items = tracker.findAll();
         for (Item value : items) {
             out.println(value);
         }

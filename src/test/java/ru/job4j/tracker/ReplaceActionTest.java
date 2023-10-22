@@ -1,5 +1,6 @@
 package ru.job4j.tracker;
 
+import org.junit.Before;
 import org.junit.Test;
 import ru.job4j.tracker.actions.ReplaceAction;
 import ru.job4j.tracker.input.Input;
@@ -7,19 +8,29 @@ import ru.job4j.tracker.models.Item;
 import ru.job4j.tracker.output.Output;
 import ru.job4j.tracker.stubs.StubOutput;
 import ru.job4j.tracker.trackers.MemTracker;
+import ru.job4j.tracker.trackers.Store;
 
-import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.mock;
+import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ReplaceActionTest {
 
+    private Store tracker;
+
+    private Output out;
+
+    @Before
+    public void whenSetUp() {
+        out = new StubOutput();
+        tracker = new MemTracker();
+        tracker.init();
+    }
+
     @Test
     public void whenReplaceItemSuccess() {
-        Output out = new StubOutput();
-        MemTracker tracker = new MemTracker();
         tracker.add(new Item("Replaced item"));
         String replacedName = "New item name";
         ReplaceAction rep = new ReplaceAction(out);
@@ -35,8 +46,6 @@ public class ReplaceActionTest {
 
     @Test
     public void whenReplaceItemWithError() {
-        Output out = new StubOutput();
-        MemTracker tracker = new MemTracker();
         String itemName = "Replaced item";
         tracker.add(new Item(itemName));
         ReplaceAction rep = new ReplaceAction(out);

@@ -8,14 +8,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * Реализация доступа к хранилищу заявок в БД с помощью Jdbc
+ */
 public class SqlTracker implements Store {
 
+    /**
+     * Зависимость от объекта Connection
+     */
     private Connection cn;
 
+    /**
+     * Конструктор
+     * @param cn объект Connection
+     */
     public SqlTracker(Connection cn) {
         this.cn = cn;
     }
 
+    /**
+     * Создает заявку по выборке из БД
+     * @param rs объект ResultSet
+     * @return объект в виде заявки
+     */
     private Item getItemFromDb(ResultSet rs) throws SQLException {
         return new Item(
                 rs.getInt(1),
@@ -117,19 +132,19 @@ public class SqlTracker implements Store {
     }
 
     @Override
-    public List<Item> findByName(String key) {
+    public List<Item> findByKeyInName(String key) {
         List<Item> copyItem = new ArrayList<>();
         try (PreparedStatement ps = cn.prepareStatement(
-                "SELECT * FROM items WHERE name = ? ORDER BY id DESC"
+                "SELECT * FROM items WHERE name like ? ORDER BY id DESC"
         )) {
-            ps.setString(1, key);
+            ps.setString(1, "%" + key + "%");
             try (ResultSet rs  = ps.executeQuery()) {
                 while (rs.next()) {
                     copyItem.add(getItemFromDb(rs));
                 }
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
         return copyItem;
     }

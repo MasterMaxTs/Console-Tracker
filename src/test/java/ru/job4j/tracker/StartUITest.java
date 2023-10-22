@@ -1,5 +1,6 @@
 package ru.job4j.tracker;
 
+import org.junit.Before;
 import org.junit.Test;
 import ru.job4j.tracker.actions.*;
 import ru.job4j.tracker.input.Input;
@@ -9,15 +10,24 @@ import ru.job4j.tracker.output.Output;
 import ru.job4j.tracker.stubs.StubInput;
 import ru.job4j.tracker.stubs.StubOutput;
 import ru.job4j.tracker.trackers.MemTracker;
+import ru.job4j.tracker.trackers.Store;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class StartUITest {
+
+    private Store memTracker;
+
+    @Before
+    public void whenSetUp() {
+        memTracker = new MemTracker();
+        memTracker.init();
+    }
 
     @Test
     public void whenCreateItem() {
@@ -25,7 +35,6 @@ public class StartUITest {
                 new String[] {"0", "Created Item", "1"}
         );
         Output output = new ConsoleOutput();
-        MemTracker memTracker = new MemTracker();
         List<UserAction> actions = new ArrayList<>();
         actions.add(new CreateAction(output));
         actions.add(new Exit(output));
@@ -35,7 +44,6 @@ public class StartUITest {
 
     @Test
     public void whenReplaceItem() {
-        MemTracker memTracker = new MemTracker();
         Item item = memTracker.add(new Item("Replaced item"));
         String replacedName = "New item name";
         Input in = new StubInput(
@@ -51,7 +59,6 @@ public class StartUITest {
 
     @Test
     public void whenDeleteItem() {
-        MemTracker memTracker = new MemTracker();
         Item item = memTracker.add(new Item("Deleted item"));
         Input in = new StubInput(
                 new String[] {"0", String.valueOf(item.getId()), "1"}
@@ -66,7 +73,6 @@ public class StartUITest {
 
     @Test
     public void whenFindAllItem() {
-        MemTracker memTracker = new MemTracker();
         Item[] items = {memTracker.add(new Item("Item1")),
                 memTracker.add(new Item("Item2")),
                 memTracker.add(new Item("Item3")),
@@ -99,8 +105,7 @@ public class StartUITest {
     }
 
     @Test
-    public void whenFindByNameItem() {
-        MemTracker memTracker = new MemTracker();
+    public void whenFindByKeyInNameItem() {
         Item[] items = {memTracker.add(new Item("Item")),
                 memTracker.add(new Item("Found Item")),
         };
@@ -118,7 +123,7 @@ public class StartUITest {
                 "Menu." + System.lineSeparator()
                         + "0. FindItemByName" + System.lineSeparator()
                         + "1. Exit" + System.lineSeparator()
-                        + "=== Find items by name ===" + System.lineSeparator()
+                        + "=== Find items by key in item name ===" + System.lineSeparator()
                         + memTracker.findAll().get(1) + System.lineSeparator()
                         + "Menu." + System.lineSeparator()
                         + "0. FindItemByName" + System.lineSeparator()
@@ -129,7 +134,6 @@ public class StartUITest {
 
     @Test
     public void whenFindByIdItem() {
-        MemTracker memTracker = new MemTracker();
         Item[] items = {memTracker.add(new Item("Item1")),
                 memTracker.add(new Item("Item2")),
                 memTracker.add(new Item("Item3")),
@@ -159,15 +163,14 @@ public class StartUITest {
 
     @Test
     public void whenInvalidExit() {
-        Output out = new StubOutput();
+        Output output = new StubOutput();
         Input in = new StubInput(
                 new String[] {"7", "0"}
         );
-        MemTracker memTracker = new MemTracker();
         List<UserAction> actions = new ArrayList<>();
-        actions.add(new Exit(out));
-        new StartUI(out).init(in, memTracker, actions);
-        assertThat(out.toString(), is(
+        actions.add(new Exit(output));
+        new StartUI(output).init(in, memTracker, actions);
+        assertThat(output.toString(), is(
                 String.format(
                         "Menu.%n"
                                 + "0. Exit%n"

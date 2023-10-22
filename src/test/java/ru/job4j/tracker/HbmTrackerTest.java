@@ -119,15 +119,15 @@ public class HbmTrackerTest {
     }
 
     @Test
-    public void whenFindItemByNameThanTrackerHasListSameItemsName() {
-        Item first = new Item("test1");
-        Item second = new Item("test2");
-        Item third = new Item("test1");
+    public void whenFindItemByKeyInNameThanTrackerHasListSameItemsName() {
+        Item first = new Item("The first item");
+        Item second = new Item("The second item");
+        Item third = new Item("The first item");
         List<Item> items = List.of(first, second, third);
         items.forEach(i -> tracker.add(i));
-        String search = "test1";
-        List<Item> rsl = tracker.findByName(search);
-        assertThat(rsl.get(0).getId(), is(first.getId()));
-        assertThat(rsl.get(1).getId(), is(third.getId()));
+        String search = "first";
+        List<Item> rsl = tracker.findByKeyInName(search);
+        assertThat(rsl.size(), is(2));
+        assertThat(tracker.findByKeyInName("***"), is(List.of()));
     }
 }
