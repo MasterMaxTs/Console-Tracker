@@ -33,7 +33,8 @@ public class ReplaceAction implements UserAction {
         out.println("=== Replace a current Item ===");
         int id = input.askInt("Enter id: ");
         String name = input.askString("Enter name: ");
-        Item item = new Item(name);
+        String description = input.askString("Enter description: ");
+        Item item = new Item(name, description);
         if (tracker.replace(id, item)) {
             out.println("Replace success!");
         } else {

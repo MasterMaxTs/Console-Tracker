@@ -40,15 +40,16 @@ public class FindItemByIdActionTest {
 
     @Test
     public void whenFindItemByIdThanSuccess() {
-        tracker.add(new Item("firstItem"));
-        tracker.add(new Item("secondItem"));
+        tracker.add(new Item("firstItem", "desc1"));
+        tracker.add(new Item("secondItem", "desc2"));
         FindItemByIdAction findById = new FindItemByIdAction(out);
         Input input = mock(Input.class);
         when(input.askInt(any(String.class))).thenReturn(2);
         findById.execute(input, tracker);
         String ls = System.lineSeparator();
         assertThat(out.toString(), is("=== Find item by Id ===" + ls
-        + "id: 2, name: secondItem, created: " + formatter.format(created) + ls));
+        + "id: 2, name: secondItem, created: " + formatter.format(created) + ls
+        + "description: desc2" + ls));
         assertThat(tracker.findAll().get(1).getName(), is("secondItem"));
     }
 

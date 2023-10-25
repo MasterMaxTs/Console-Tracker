@@ -9,6 +9,7 @@ import ru.job4j.tracker.input.ValidateInput;
 import ru.job4j.tracker.output.ConsoleOutput;
 import ru.job4j.tracker.output.Output;
 import ru.job4j.tracker.trackers.HbmTracker;
+import ru.job4j.tracker.trackers.MemTracker;
 import ru.job4j.tracker.trackers.Store;
 
 import java.io.IOException;
@@ -44,6 +45,7 @@ public class StartUI {
      * в виде списка на входе
      */
     public void init(Input input, Store tracker, List<UserAction> actions) {
+        this.printLogo();
         boolean run = true;
         while (run) {
             this.showMenu(actions);
@@ -58,7 +60,20 @@ public class StartUI {
     }
 
     /**
-     * Отображает текстовое меню в консоле приложения
+     * Печатает в консоли логотип приложения
+     * @return логотип приложения в виде строки
+     */
+    public String printLogo() {
+        String name = "Console Tracker";
+        String line = "********************";
+        String ln = System.lineSeparator();
+        String logo = line + ln + name + ln + line;
+        out.println(logo);
+        return logo;
+    }
+
+    /**
+     * Отображает текстовое меню в консоли приложения
      * @param actions реализации действий пользователя в меню приложения
      * в виде списка
      */

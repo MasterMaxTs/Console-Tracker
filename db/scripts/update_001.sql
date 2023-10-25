@@ -1,7 +1,7 @@
 create table if not exists items
 (
     id      serial primary key,
-    name    varchar(30),
+    name    varchar(200),
     created timestamp,
     description text
 );

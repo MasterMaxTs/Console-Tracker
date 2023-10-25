@@ -89,11 +89,13 @@ public class SqlTracker implements Store {
     @Override
     public boolean replace(int id, Item item) {
         try (PreparedStatement ps = cn.prepareStatement(
-                "UPDATE items SET name = ?, created = ? WHERE id = ?"
+                "UPDATE items SET name = ?, description = ?, created = ? "
+                        + "WHERE id = ?"
         )) {
             ps.setString(1, item.getName());
-            ps.setTimestamp(2, Timestamp.valueOf(item.getCreated()));
-            ps.setInt(3, id);
+            ps.setString(2, item.getDescription());
+            ps.setTimestamp(3, Timestamp.valueOf(item.getCreated()));
+            ps.setInt(4, id);
             return ps.executeUpdate() > 0;
         } catch (SQLException throwables) {
             throwables.printStackTrace();

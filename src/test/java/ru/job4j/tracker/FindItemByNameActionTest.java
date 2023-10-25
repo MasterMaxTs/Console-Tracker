@@ -41,17 +41,21 @@ public class FindItemByNameActionTest {
     @Test
     public void whenFindItemByKeyInNameThanSuccess() {
         tracker.init();
-        tracker.add(new Item("first Item"));
-        tracker.add(new Item("second Item"));
-        tracker.add(new Item("first Item"));
+        tracker.add(new Item("first Item", "desc1"));
+        tracker.add(new Item("second Item", "desc2"));
+        tracker.add(new Item("addition to first Item", "desc3"));
         FindItemByNameAction findByName = new FindItemByNameAction(out);
         Input input = mock(Input.class);
         when(input.askString(any(String.class))).thenReturn("first");
         findByName.execute(input, tracker);
         String ls = System.lineSeparator();
         assertThat(out.toString(), is("=== Find items by key in item name ===" + ls
-                        + "id: 1, name: first Item, created: " + formatter.format(created) + ls
-                        + "id: 3, name: first Item, created: " + formatter.format(created) + ls));
+                        + "id: 1, name: first Item,"
+                        + " created: " + formatter.format(created) + ls
+                        + "description: desc1" + ls
+                        + "id: 3, name: addition to first Item,"
+                        + " created: " + formatter.format(created) + ls
+                        + "description: desc3" + ls));
     }
 
     @Test

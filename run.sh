@@ -2,4 +2,4 @@
 
 mvn liquibase:update -Pdocker
 
-java -jar target/tracker.jar
+java -jar target/console_tracker.jar

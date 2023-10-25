@@ -10,7 +10,7 @@ public class StubInput implements Input {
     /**
      * Набор тестовых фраз в виде строкового массива
      */
-    private String[] answers;
+    private final String[] answers;
 
     /**
      * Указатель индекса массива
